@@ -44,6 +44,8 @@ RUN useradd \
     && chown -R 1001:1001 /var/log/CTFd /var/uploads \
     && chmod +x /opt/CTFd/docker-entrypoint.sh
 
+RUN sed -i -e 's|@views.route("/", defaults={"route": "index"})||' /opt/CTFd/CTFd/views.py
+
 COPY --chown=1001:1001 --from=build /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
