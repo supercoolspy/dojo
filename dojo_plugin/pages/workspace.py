@@ -77,4 +77,10 @@ def forward_workspace(service, sig, container_id, service_path=""):
     if user != current_user:
         print(f"User {current_user.id} is accessing User {user.id}'s workspace (port {port})", flush=True)
 
-    return f"http://{os.environ.get("WORKSPACE_HOST")}/workspace/{container_id}/{sig}/{port}/{service_path}"
+    workspace_host = os.environ.get("WORKSPACE_HOST")
+
+    if not workspace_host:
+        abort(500)
+        return
+
+    return f"http://{workspace_host}/workspace/{container_id}/{sig}/{port}/{service_path}"
