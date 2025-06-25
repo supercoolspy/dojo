@@ -203,6 +203,7 @@ services:
     environment:
       - DEFAULT_HOST=${DOJO_HOST}
       - WORKSPACE_HOST=${WORKSPACE_HOST}
+      - WORKSPACE_SECRET=${WORKSPACE_SECRET}
       - TRUST_DOWNSTREAM_PROXY=false
       - LOG_JSON=true
     volumes:
