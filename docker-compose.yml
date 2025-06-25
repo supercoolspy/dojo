@@ -195,7 +195,7 @@ services:
     container_name: nginx-proxy
     profiles:
       - main
-    image: nginxproxy/nginx-proxy:1.5
+    build: ./nginx-proxy
     restart: always
     ports:
       - "80:80"
