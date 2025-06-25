@@ -1,4 +1,5 @@
 import hmac
+import os
 
 from flask import request, Blueprint, render_template, url_for, abort
 from CTFd.models import Users
@@ -26,13 +27,7 @@ port_names = {
 def view_workspace(service):
     return render_template("workspace.html", iframe_name="workspace", service=service)
 
-@workspace.route("/workspace/<service>/", websocket=True)
-@workspace.route("/workspace/<service>/<path:service_path>", websocket=True)
-@workspace.route("/workspace/<service>/", methods=["GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"])
-@workspace.route("/workspace/<service>/<path:service_path>", methods=["GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"])
-@authed_only
-@bypass_csrf_protection
-def forward_workspace(service, service_path=""):
+def forward_workspace(service, sig, container_id, service_path=""):
     prefix = f"/workspace/{service}/"
     assert request.full_path.startswith(prefix)
     service_path = request.full_path[len(prefix):]
@@ -82,4 +77,4 @@ def forward_workspace(service, service_path=""):
     if user != current_user:
         print(f"User {current_user.id} is accessing User {user.id}'s workspace (port {port})", flush=True)
 
-    return redirect_user_socket(user, port, service_path)
+    return f"http://{os.environ.get("WORKSPACE_HOST")}/workspace/{container_id}/{sig}/{port}/{service_path}"
