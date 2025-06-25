@@ -100,7 +100,7 @@ class view_desktop(Resource):
         if start_on_demand_service(user, service) is False:
             return {"active": False}
 
-        return {"active": True, "iframe_src": iframe_src, "service": service}
+        return {"active": True, "iframe_src": iframe_src, "service": service, "setPort": os.getenv("DOJO_ENV") == "development"}
 
 
 @workspace_namespace.route("/reset_home")
