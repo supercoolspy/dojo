@@ -28,9 +28,6 @@ def view_workspace(service):
     return render_template("workspace.html", iframe_name="workspace", service=service)
 
 def forward_workspace(service, sig, container_id, service_path=""):
-    prefix = f"/workspace/{service}/"
-    service_path = request.full_path[len(prefix):]
-
     if service.count("~") == 0:
         service_name = service
         try:
