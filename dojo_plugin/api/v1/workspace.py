@@ -77,7 +77,7 @@ class view_desktop(Resource):
                 "reconnect": 1,
                 "reconnect_delay": 200,
                 "resize": "remote",
-                "path": forward_workspace(service=service_param, service_path="websockify", sig=sig, container_id=container_id),
+                "path": forward_workspace(service=service_param, service_path="websockify", sig=sig, container_id=container_id, include_host=False),
                 "view_only": int(view_only),
                 "password": password,
             }
@@ -90,7 +90,7 @@ class view_desktop(Resource):
                 "reconnect": 1,
                 "reconnect_delay": 200,
                 "resize": "local",
-                "path": forward_workspace(service=service_param, service_path="websockify", sig=sig, container_id=container_id),
+                "path": forward_workspace(service=service_param, service_path="websockify", sig=sig, container_id=container_id, include_host=False),
                 "password": "password",
             }
             iframe_src = forward_workspace(service=service_param, service_path="vnc.html", sig=sig, container_id=container_id, **vnc_params)
