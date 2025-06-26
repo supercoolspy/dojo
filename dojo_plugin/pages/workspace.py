@@ -6,6 +6,7 @@ from CTFd.models import Users
 from CTFd.utils.user import get_current_user, is_admin
 from CTFd.utils.decorators import authed_only
 from CTFd.plugins import bypass_csrf_protection
+from urllib.parse import urlencode
 
 from ..models import Dojos
 from ..utils import redirect_user_socket, get_current_container, container_password
@@ -27,7 +28,7 @@ port_names = {
 def view_workspace(service):
     return render_template("workspace.html", iframe_name="workspace", service=service)
 
-def forward_workspace(service, sig, container_id, service_path=""):
+def forward_workspace(service, sig, container_id, service_path="", **kwargs):
     if service.count("~") == 0:
         service_name = service
         try:
@@ -79,4 +80,10 @@ def forward_workspace(service, sig, container_id, service_path=""):
         abort(500)
         return
 
-    return f"http://{workspace_host}/workspace/{container_id}/{sig}/{port}/{service_path}"
+    url = f"http://{workspace_host}/workspace/{container_id}/{sig}/{port}/{service_path}"
+
+    if not len(kwargs) == 0:
+        args = urlencode(kwargs)
+        url = f"{url}?{args}"
+
+    return url
