@@ -43,5 +43,8 @@ echo 'map "" $workspace_secret { default {{ .Env.WORKSPACE_SECRET }}; }' >> /app
 echo 'map "" $default_host { default {{ .Env.DEFAULT_HOST }}; }' >> /app/nginx.tmpl
 EOF
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["forego", "start", "-r"]
